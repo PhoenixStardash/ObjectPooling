@@ -16,60 +16,40 @@ public:
 	// Sets default values for this component's properties
 	UObjectPoolComponent();
 
-	UPROPERTY(
-		BlueprintReadWrite,
-		EditAnywhere,
-		meta=(
-			ToolTip=
-			"The class based on AActor which this pool holds."
-		)
-	)
+        /**
+	* The class based on AActor which this pool holds.
+	*/
+        UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Object Pooling")
 	TSubclassOf<AActor> ObjectClass;
 
-	UPROPERTY(
-		BlueprintReadWrite,
-		EditAnywhere,
-		meta=(
-			ClampMin= "0",
-			ToolTip=
-			"How many objects the pool should spawn initially."
-		)
-	)
+        /**
+	* "How many objects the pool should spawn initially."
+	*/
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Object Pooling", meta=(ClampMin= "0"))
 	int32 InitialSpawnAmount = 0;
 
-	UPROPERTY(
-		BlueprintReadWrite,
-		EditAnywhere,
-		DisplayName="Expand Pool if needed",
-		meta=(
-			ToolTip=
-			"Decides wether the pool is allowed to spawn a new actor and expand the pool if something tries to pull an item and there's none available."
-		)
-	)
+        /**
+	* "Decides wether the pool is allowed to spawn a new actor and expand the pool if something tries to pull an item and there's none available"
+	*/
+	UPROPERTY(BlueprintReadWrite, EditAnywhere,  Category = "Object Pooling", DisplayName="Should Pool Be Expanded")
 	bool bCanExpandIfNeeded = true;
 
-	UPROPERTY(VisibleInstanceOnly)
+	UPROPERTY(VisibleInstanceOnly, Category = "Object Pooling")
 	TArray<AActor*> InactivePool;
 
-	UPROPERTY(VisibleInstanceOnly)
+	UPROPERTY(VisibleInstanceOnly, Category = "Object Pooling")
 	TArray<AActor*> ActivePool;
 
-	UFUNCTION(BlueprintCallable,
-		Category="ObjectPool",
-		meta=(
-			Description="Moves an actor into the object pool and sends a OnPushed event to the object pool interface."
-		)
-	)
+        /**
+	* "Moves an actor into the object pool and sends a OnPushed event to the object pool interface."
+	*/
+	UFUNCTION(BlueprintCallable, Category="Object Pooling")
 	void Push(AActor* Actor, UPARAM(DisplayName = "Sucess") bool& Success_Out);
 
-	UFUNCTION(
-		BlueprintCallable,
-		Category="ObjectPool",
-		meta=(
-			ToolTip=
-			"Fetches an actor reference from the pool and sends a OnPulled event to the object pool interface. If there's no available object it will spawn a new one if the settings allow it."
-		)
-	)
+        /**
+	* "Fetches an actor reference from the pool and sends a OnPulled event to the object pool interface. If there's no available object it will spawn a new one if the settings allow it."
+	*/
+	UFUNCTION(BlueprintCallable, Category="Object Pooling")
 	void Pull(AActor* & Actor_Out, UPARAM(DisplayName = "Sucess") bool& Success_Out);
 
 	UFUNCTION(BlueprintInternalUseOnly)
@@ -101,7 +81,7 @@ class OBJECTPOOL_API IObjectPool
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="ObjectPool")
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Object Pooling")
 	void OnPushed();
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="ObjectPool")
